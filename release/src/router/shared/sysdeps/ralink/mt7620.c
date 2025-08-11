@@ -228,7 +228,7 @@ enum {
 	P7_PORT=7,
 };
 #define MT7621_GSW
-#elif defined(H3CTX1801) || defined(XMCR660X)|| defined(RTTX1801) || defined(RTAX18T) || defined(RTHAR) || defined(RTCR660X) || defined(RTKOMIA8)
+#elif defined(H3CTX1801) || defined(XMCR660X)|| defined(RTTX1801) || defined(RTAX18T) || defined(RTHAR) || defined(RTCR660X)
 enum {
 	WAN_PORT=4,
 	LAN1_PORT=3,
@@ -238,6 +238,18 @@ enum {
 	P5_PORT=5,
 	CPU_PORT=6,
 	P7_PORT=7,
+};
+#define MT7621_GSW
+#elif defined(RTKOMIA8)
+enum {
+        WAN_PORT=1,
+        LAN1_PORT=2,
+        LAN2_PORT=3,
+        LAN3_PORT=4,
+        LAN4_PORT=0,
+        P5_PORT=5,
+        CPU_PORT=6,
+        P7_PORT=7,
 };
 #define MT7621_GSW
 #elif defined(RTGAX1800)

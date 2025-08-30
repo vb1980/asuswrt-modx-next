@@ -264,7 +264,7 @@ enum {
 	P7_PORT=7,
 };
 #define MT7621_GSW
-#elif defined(RTRX6000)
+#elif defined(RTRX6000) || defined(RTMPAX18)
 enum {
 	WAN_PORT=4,
 	LAN1_PORT=1,

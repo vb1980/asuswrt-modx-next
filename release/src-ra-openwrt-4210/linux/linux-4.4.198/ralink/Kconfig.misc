@@ -88,6 +88,10 @@ config  MODEL_RTRX6000
         bool "RT-RX6000"
         default n
 
+config  MODEL_RTMPAX18
+        bool "RT-MPAX18"
+        default n
+
 config  MODEL_RTKOMIA8
         bool "RT-KOMIA8"
         default n

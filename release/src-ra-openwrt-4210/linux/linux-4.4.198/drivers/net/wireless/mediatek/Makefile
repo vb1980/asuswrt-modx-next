@@ -34,6 +34,7 @@ obj-$(CONFIG_MODEL_RTRX6000) += mt7915/7.4.0.0/mt_wifi_ap/
 obj-$(CONFIG_MODEL_RTMPAX18) += mt7915/7.4.0.0/mt_wifi_ap/
 obj-$(CONFIG_MODEL_RTKOMIA8) += mt7915/7.4.0.0/mt_wifi_ap/
 obj-$(CONFIG_MODEL_RTT6M) += mt7915/7.4.0.0/mt_wifi_ap/
+obj-$(CONFIG_MODEL_RTT6GS) += mt7915/7.4.0.0/mt_wifi_ap/
 obj-$(CONFIG_MODEL_XMCR660X) += mt7915/7.4.0.0/mt_wifi_ap/
 obj-$(CONFIG_MODEL_RTCR660X) += mt7915/7.4.0.0/mt_wifi_ap/
 obj-$(CONFIG_MODEL_JCGQ20) += mt7915/7.4.0.0/mt_wifi_ap/

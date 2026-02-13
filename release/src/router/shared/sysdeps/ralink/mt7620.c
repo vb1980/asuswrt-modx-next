@@ -312,6 +312,18 @@ enum {
 	P7_PORT=7,
 };
 #define MT7621_GSW
+#elif defined(RTT6GS)
+enum {
+        WAN_PORT=3,
+        LAN1_PORT=2,
+        LAN2_PORT=1,
+        LAN3_PORT=0,
+        LAN4_PORT=4, //not used
+        P5_PORT=5,
+        CPU_PORT=6,
+        P7_PORT=7,
+};
+#define MT7621_GSW
 #elif defined(XD4S)
 enum {
 	WAN_PORT=4,

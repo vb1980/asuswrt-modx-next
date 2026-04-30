@@ -108,6 +108,10 @@ config  MODEL_RTT6GS
         bool "RT-T6GS"
         default n
 
+config  MODEL_RTT6U
+        bool "RT-T6U"
+        default n
+
 config  MODEL_RTCR660X
         bool "RT-CR660X"
         default n

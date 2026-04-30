@@ -296,6 +296,8 @@ void swrt_init_pre()
 		nvram_set("modelname", "RTT6M");
 #elif defined(RTT6GS)
                 nvram_set("modelname", "RTT6GS");
+#elif defined(RTT6U)
+                nvram_set("modelname", "RTT6U");
 #elif defined(RTCR660X)
 		nvram_set("modelname", "RTCR660X");
 #elif defined(R6800)

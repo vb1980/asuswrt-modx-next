@@ -38,7 +38,7 @@ endif
 #	LDFLAGS = -L/usr/local/lib -lusb -lpthread -Wl,--rpath -Wl,/usr/local/lib
 #else
 	CFLAGS = -DSUPPORT_LPRng
-	CFLAGS += -I. -I$(TOP)/shared
+	CFLAGS += -I. -I$(TOP)/shared -I$(TOP)/nvram${BCMEX}
 	CFLAGS += -I$(TOP)/kernel_header/include -I$(SRCBASE)/include
 	CFLAGS += -I$(TOP)/libusb/libusb -DASUS_U2EC
 #	CFLAGS += -I$(TOP)/libusb-0.1.12
@@ -47,7 +47,7 @@ endif
 	LDFLAGS += -L$(TOP)/libusb/libusb/.libs -lusb
 #	LDFLAGS += -L$(TOP)/libusb-0.1.12/.libs -l:libusb.a
 	LDFLAGS += -L$(TOP)/shared -lshared
-	LDFLAGS += -L$(TOP_PLATFORM)/nvram${BCMEX}$(EX7) -lnvram
+	LDFLAGS += -L$(TOP)/nvram${BCMEX} -lnvram
 #endif
 
 ifeq ($(HND_ROUTER),y)
@@ -75,9 +75,9 @@ CFLAGS += $(DEBFLAGS)
 
 all: $(PROG)
 
-ifneq ($(wildcard ./prebuild/$(BUILD_NAME)/$(PROG)),)
+ifneq ($(wildcard ./prebuild/$(PREBUILT_NAME)/$(PROG)),)
 $(PROG):
-	cp prebuild/$(BUILD_NAME)/$(PROG) .
+	cp prebuild/$(PREBUILT_NAME)/$(PROG) .
 else
 $(PROG): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)

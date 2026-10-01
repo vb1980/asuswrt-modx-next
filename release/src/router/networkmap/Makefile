@@ -36,15 +36,6 @@ CFLAGS += -I$(SRCBASE)/shared/bcmwifi/include -DTYPEDEF_FLOAT_T
 CFLAGS += -I$(SRCBASE)/common/include
 #LDFLAGS += -L$(TOP)/libbcm -lbcm
 LDFLAGS += -lgcc_s
-ifeq ($(RTCONFIG_QTN),y)
-CFLAGS += -I$(TOP)/libqcsapi_client -I$(TOP)/shared/sysdeps/qtn
-LDFLAGS += -L$(TOP)/libqcsapi_client -lqcsapi_client
-endif
-endif
-
-ifeq ($(RTCONFIG_QSR10G),y)
-CFLAGS += -I$(TOP)/libqcsapi_client_10g
-LDFLAGS += -L$(TOP)/libqcsapi_client_10g -lqcsapi_client
 endif
 
 ifeq ($(RTCONFIG_LANTIQ),y)
@@ -111,22 +102,14 @@ ifeq ($(HND_ROUTER),y)
 CFLAGS += -DHND_ROUTER
 endif
 
-ifneq ($(AC2900),y)
-ifneq ($(wildcard prebuild/$(BUILD_NAME)/networkmap),)
+
+ifneq ($(wildcard prebuild/$(PREBUILT_NAME)/networkmap),)
 all: 
-	-cp -f prebuild/$(BUILD_NAME)/networkmap networkmap
-	-cp -f prebuild/$(BUILD_NAME)/asusdiscovery asusdiscovery
-	-cp -f prebuild/$(BUILD_NAME)/arpstorm arpstorm
+	-cp -f prebuild/$(PREBUILT_NAME)/networkmap networkmap
+	-cp -f prebuild/$(PREBUILT_NAME)/asusdiscovery asusdiscovery
+	-cp -f prebuild/$(PREBUILT_NAME)/arpstorm arpstorm
 else
 all: $(EXEC) asusdiscovery arpstorm
-endif
-else
-ifeq ($(wildcard $(SRCBASE)/router/networkmap/*.c),)
-all: 
-	-cp -f prebuild/networkmap networkmap
-else
-all: $(EXEC)
-endif
 endif
 
 $(EXEC): $(OBJS)
@@ -135,28 +118,19 @@ $(EXEC): $(OBJS)
 arpstorm: arpstorm.o
 	$(CC) -o $@ $^ $(LDFLAGS) $(CFLAGS)
 
-ifneq ($(AC2900),y)
 asusdiscovery: packet.o ASUS_Discovery.o ASUS_Discovery_Debug.o
 	$(CC) -o $@ $^ $(LDFLAGS) $(CFLAGS)
-endif
 
 install:
 	install -D $(EXEC) $(INSTALLDIR)/usr/sbin/$(EXEC)
 	$(STRIP) $(INSTALLDIR)/usr/sbin/$(EXEC)
-ifneq ($(AC2900),y)
 	install -D asusdiscovery $(INSTALLDIR)/usr/sbin/asusdiscovery
 	$(STRIP) $(INSTALLDIR)/usr/sbin/asusdiscovery
-ifneq ($(wildcard $(SRCBASE)/router/networkmap/arpstorm),)
 	install -D arpstorm $(INSTALLDIR)/usr/sbin/arpstorm
 	$(STRIP) $(INSTALLDIR)/usr/sbin/arpstorm
-endif
-endif
 	install -d $(INSTALLDIR)/usr/networkmap
 	cp -f networkmap.oui.js $(INSTALLDIR)/usr/networkmap/networkmap.oui.js
 
 clean:
-ifneq ($(AC2900),y)
 	rm -rf *.o $(EXEC) *~ asusdiscovery arpstorm
-else
-	rm -rf *.o $(EXEC) *~
-endif
+

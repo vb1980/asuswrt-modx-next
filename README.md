@@ -1,46 +1,133 @@
-假如你对OpenWrt开发感兴趣，黑猫强烈推荐佐大的OpenWrt培训班，报名地址：https://forgotfun.org/2018/04/openwrt-training-2018.html
+# asuswrt-modx-next
 
+基于 ASUSWRT / SWRT 的固件适配项目。`master` 已统一九款机型的适配，通过 `BOARD_PROFILE` 选择硬件，无需切换机型分支。
 
-注意：
-=
-1. **不**要用 **root** 用户 git 和编译！！！
-2. 国内用户编译前最好准备好梯子
+各机型共用 RT-AX53U 构建框架和公共软件功能；无线驱动、校准数据、网口映射、GPIO、按键、LED、USB 和显示名称按硬件区分。
 
-## 编译
+## 支持的机型
 
-1. 首先装好 Ubuntu 64bit，推荐  Ubuntu  18 LTS x64 /  Mint 19.1
+| BOARD_PROFILE | 机型 | 无线组合 | WAN + LAN | USB 数量 | 固件文件名前缀 |
+| --- | --- | --- | --- | --- | --- |
+| `R3G` | 小米路由器 3G | MT7603 + MT7612 | 1 + 2 | 1 | `MI-R3G` |
+| `HIWIFI4` | 极路由 4 增强版 HC5962 | MT7603 + MT7612 | 1 + 3 | 2 | `HIWIFI4` |
+| `E8820S` | 中兴 E8820S | MT7603 + MT7612 | 1 + 4 | 1 | `ZTE-E8820S` |
+| `A040WQ` | Nokia A-040W-Q | 单颗 MT7615 双频 DBDC | 1 + 4 | 1 | `NOKIA-A040WQ` |
+| `MSG1500` | 瑞斯康达 MSG1500 | 单颗 MT7615 双频 DBDC | 1 + 4 | 1 | `RAISECOM-MSG1500` |
+| `R6800` | NETGEAR R6800 | MT7615 + MT7615 | 1 + 4 | 2 | `NETGEAR-R6800` |
+| `R3P` | 小米路由器 Pro | MT7615 + MT7615 | 1 + 3 | 1 | `MI-R3P` |
+| `RM2100` | 红米 AC2100 | MT7603 + MT7615 | 1 + 3 | 0 | `REDMI-AC2100` |
+| `SIM-AX18T` | SIM-AX18T | MT7915 双频 DBDC | 1 + 4 | 0 | `SIMAX1800T` |
 
-2. 命令行输入 `sudo apt-get update` ，然后输入
-`
-sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3.5 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget libncurses5:i386 libelf1:i386 lib32z1 lib32stdc++6 gtk-doc-tools intltool binutils-dev cmake lzma liblzma-dev lzma-dev uuid-dev liblzo2-dev xsltproc dos2unix libstdc++5 docbook-xsl-* sharutils autogen shtool gengetopt libltdl-dev libtool-bin
-`
+公共构建功能包括 OpenVPN、WireGuard、Ookla 测速、游戏模式、软件中心、EasyMesh 和 Smart Connect。运行效果仍需实机验证；USB、AX 等硬件能力按机型呈现。
 
-3. 使用 `git clone https://github.com/stkuroneko/asuswrt-modx-next.git` 命令下载好源代码
+## 编译环境
 
-4. 使用 `git clone https://github.com/SWRT-dev/mtk-toolchains` 命令下载toolchains
+使用普通用户下载源码和编译，**不要使用 root 用户运行 Git 或 make**。安装依赖及创建工具链链接时使用 `sudo`。
 
-5. 分别执行 `cd mtk-toolchains`
+原有构建环境为 Ubuntu 18.04 LTS x64 / Linux Mint 19.1。以下保留该环境的依赖清单，较新发行版可能需要调整包名和兼容依赖。
 
-	`sudo ln -sf $(pwd)/toolchain-aarch64_cortex-a53+neon-vfpv4_gcc-5.4.0_glibc-2.24 /opt/`
+```bash
+sudo dpkg --add-architecture i386
+sudo apt-get update
+sudo apt-get -y install \
+  build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev \
+  libz-dev patch python3.5 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 \
+  subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp \
+  libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf \
+  automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf \
+  wget libncurses5:i386 libelf1:i386 lib32z1 lib32stdc++6 gtk-doc-tools \
+  intltool binutils-dev cmake lzma liblzma-dev lzma-dev uuid-dev liblzo2-dev \
+  xsltproc dos2unix libstdc++5 'docbook-xsl-*' sharutils autogen shtool \
+  gengetopt libltdl-dev libtool-bin bison
+```
 
-	`sudo ln -sf $(pwd)/lede-toolchain-mediatek-mt7629_gcc-5.4.0_musl-1.1.24_eabi.Linux-x86_64 /opt/`
+下载源码和工具链，确保网络可以访问依赖下载源：
 
-	`sudo ln -sf $(pwd)/toolchain-mipsel_24kc_gcc-5.4.0_musl-1.1.24 /opt/`
+```bash
+git clone https://github.com/stkuroneko/asuswrt-modx-next.git
+git clone https://github.com/SWRT-dev/mtk-toolchains.git
+cd mtk-toolchains
+sudo ln -sfn "$PWD/toolchain-mipsel_24kc_gcc-5.4.0_musl-1.1.24" /opt/
+cd ../asuswrt-modx-next
+```
 
-	`sudo ln -sf $(pwd)/toolchain-aarch64_cortex-a53_gcc-8.4.0_glibc /opt/`
-	
-	mt7622继续执行
+上述九款 MT7621 机型使用这套 MIPS 工具链。其他平台需要配置各自的工具链。
 
-	`cd toolchain-aarch64_cortex-a53+neon-vfpv4_gcc-5.4.0_glibc-2.24/lib`
+## 编译固件
 
-	`tar xvJf libc.a.tar.xz`
+从仓库根目录进入构建目录，显式指定机型：
 
-6. 然后 `cd ../asuswrt-modx-next/release/src-ra-openwrt-4210` 进入目录
+```bash
+cd release/src-ra-openwrt-4210
+make BOARD_PROFILE=R3G rt-ax53u
+```
 
-7. 输入 `make rt-cmcca9` 即可开始编译你要的固件了。
+其他机型使用相同构建目标：
 
+```bash
+make BOARD_PROFILE=HIWIFI4 rt-ax53u
+make BOARD_PROFILE=E8820S rt-ax53u
+make BOARD_PROFILE=A040WQ rt-ax53u
+make BOARD_PROFILE=MSG1500 rt-ax53u
+make BOARD_PROFILE=R6800 rt-ax53u
+make BOARD_PROFILE=R3P rt-ax53u
+make BOARD_PROFILE=RM2100 rt-ax53u
+make BOARD_PROFILE=SIM-AX18T rt-ax53u
+```
 
-8. 编译完成后输出固件路径：asuswrt-modx-next/release/src-ra-openwrt-4210/image
+不指定 `BOARD_PROFILE` 时默认编译 **HIWIFI4**。同一工作区应依次构建各机型，不能同时运行多个机型构建，因为它们共用配置和输出目录。
 
+固件输出到 `release/src-ra-openwrt-4210/image/`，包含机型前缀的 `.trx` 文件及对应 `.md5` 校验文件。文件名区分机型，镜像内部产品标识统一保留为 `RT-AX53U`。
 
+## GitHub 自动编译
 
+仓库通过 `.github/workflows/build-firmware.yml` 使用 GitHub 托管的 `ubuntu-22.04` Runner 编译。Workflow 会自动清理可释放的 Runner 磁盘空间、安装依赖，并从 `SWRT-dev/mtk-toolchains` 下载和配置 MIPS 工具链。为兼容旧构建工具的路径长度限制，工作区会 bind mount 到 `/build`，编译、检查和产物收集均从该短路径执行。
+
+向 `master` 推送提交时自动编译全部九款机型，每款机型作为独立的 GitHub Actions 任务运行，使用各自的 Runner 和工作区。也可以在 GitHub 的 **Actions → Build firmware → Run workflow** 中选择任一 `BOARD_PROFILE`；默认选择 `ALL`，启动全部九个任务。
+
+编译完成后，每款机型的 `.trx` 和 `.md5` 文件分别作为 GitHub Actions artifact 保存 14 天。各任务独立构建，某款机型失败不会取消其他机型的任务。单个任务仍可能受到 GitHub 托管 Runner 的磁盘空间和最长运行时间限制。
+
+## 闪存布局与启动模式
+
+配套 U-Boot 项目：[stkuroneko/Uboot-mips](https://github.com/stkuroneko/Uboot-mips)。U-Boot 的编译和使用说明请参阅该项目。
+
+九机型统一沿用仓库原版 RT-AX53U 的 NAND + NMBM、硬件 ECC、双固件分区和 `MTK_NAND_BLOCK2` 模式，不使用各机型原厂固件的分区布局。
+
+| 分区 | 起始地址 | 大小 |
+| --- | --- | --- |
+| Bootloader | `0x000000` | `0x0E0000`（896 KiB） |
+| nvram | `0x0E0000` | `0x100000`（1 MiB） |
+| Factory | `0x1E0000` | `0x100000`（1 MiB） |
+| Factory2 | `0x2E0000` | `0x100000`（1 MiB） |
+| Kernel | `0x3E0000` | `0x3200000`（50 MiB） |
+| Kernel2 | `0x35E0000` | `0x3200000`（50 MiB） |
+| jffs2 | `0x67E0000` | `0x1020000`（16.125 MiB） |
+
+内核加载和入口地址均为 `0x81001000`，设备树串口参数为 `console=ttyS0,115200`，内核根文件系统参数为 `rootfstype=squashfs,jffs2`。
+
+设备的 Bootloader、分区和校准数据必须与此适配方案匹配。此构建流程不会转换设备上的原厂闪存布局，也不代表镜像可以直接从各机型原厂系统刷入。
+
+各机型共用内部产品 ID，但不能混用固件，因此统一关闭在线更新入口，保留手动上传方式；上传时应选择对应机型的镜像。
+
+## 检查与验证状态
+
+在仓库根目录运行配置回归检查，需要已构建的 `release/src/router/config/conf`、C 预处理器和 Python 3.8 或更新版本：
+
+```bash
+python3 tools/check_board_profiles.py
+```
+
+检查覆盖配置生成、最终板级宏、Smart Connect 依赖、公共能力、LAN 状态数量、无线流数、SKU 安装输入、固件名称唯一性及机型切换隔离。
+
+2026-09-27 验证结果：
+
+- 九款机型的配置回归检查全部通过；E8820S、A040WQ 和 MSG1500 已完成完整构建，镜像 MD5 校验通过。
+- 除 E8820S 外的八款机型继续使用 RT-AX53U 通用 DTB；E8820S 使用专用 DTB，在 PCIe 枚举前通过 GPIO19 和 GPIO4 同时复位 MT7603 和 MT7612。
+- E8820S 实机确认已加载专用 DTB，双 PCIe 复位均成功申请，2.4G 和 5G 无线接口正常启动。
+- A040WQ 和 MSG1500 使用单颗 MT7615 的 DBDC 模式，`ra0` 为 2.4 GHz、`rai0` 为 5 GHz。A040WQ 实机已确认系统启动、DBDC 初始化和双频热点正常；MSG1500 尚需实机验证。监管域根据 `territory_code` 生成，缺失时回退到 `location_code`。
+- 镜像头和数据 CRC、FIT 哈希、SquashFS 偏移与长度校验通过，镜像均小于 50 MiB。
+- E8820S 和 A040WQ 已完成实机启动和双频无线接口检查；其余网口、按键、LED、USB 及长期无线稳定性仍需测试。
+
+已知构建问题：旧工具 `LnxHtmlEnumDict` 处理部分 Captive Portal 模板及 `dashboard/js/chart.min.js` 时出现段错误，构建会忽略这些失败并继续打包；日志中也存在被忽略的安装错误。因此构建成功不等于所有页面及运行功能均已验证。
+
+更多适配说明见 [统一机型配置说明](tools/board-profiles.md)，检查实现见 [check_board_profiles.py](tools/check_board_profiles.py)。

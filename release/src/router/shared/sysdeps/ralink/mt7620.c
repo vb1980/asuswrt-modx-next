@@ -28,7 +28,7 @@
 #include <shutils.h>
 #include <shared.h>
 #include <utils.h>
-#if defined(RTCONFIG_WLMODULE_MT7615E_AP) || defined(RTCONFIG_WLMODULE_MT7915D_AP)
+#if defined(RTCONFIG_WLMODULE_MT7615E_AP) || defined(RTCONFIG_WLMODULE_MT7915D_AP) ||defined(RTCONFIG_WLMODULE_MT7612E_AP)
 #include <linux/autoconf.h>
 #else
 #include <linux/config.h>
@@ -38,7 +38,7 @@
 #include "ra_ioctl.h"
 
 #define GPIO_DEV	"/dev/gpio0"
-#if defined(RTCONFIG_WLMODULE_MT7615E_AP) || defined(RTCONFIG_WLMODULE_MT7915D_AP)
+#if defined(RTCONFIG_WLMODULE_MT7615E_AP) || defined(RTCONFIG_WLMODULE_MT7915D_AP) ||defined(RTCONFIG_WLMODULE_MT7612E_AP)
 #define ETH_DEVNAME     "eth1"
 #else
 #define ETH_DEVNAME     "eth2"
@@ -168,7 +168,7 @@ enum {
 	P7_PORT=7,
 };
 #define MT7621_GSW
-#elif defined(RTAC85P) || defined(RTACRH26) || defined(TUFAC1750) || defined(RT4GAX56) || defined(RTAX53U)
+#elif defined(RTAC85P)   || defined(RTACRH26) || defined(TUFAC1750) || defined(RT4GAX56)
 enum {
 	WAN_PORT=0,
 	LAN1_PORT=1,
@@ -180,7 +180,7 @@ enum {
 	P7_PORT=7,
 };
 #define MT7621_GSW
-#elif defined(RMAC2100)
+#elif defined(RTAC2100) || defined(RTRM2100)
 enum {
 	WAN_PORT=0,
 	LAN1_PORT=2,
@@ -192,7 +192,31 @@ enum {
 	P7_PORT=7,
 };
 #define MT7621_GSW
-#elif defined(R6800) || defined(RTMIR3P) || defined(RTA040WQ) || defined(RTMSG1500)
+#elif defined(RTCONFIG_BOARD_R3G) || defined(RTCONFIG_BOARD_RM2100) || defined(RTCONFIG_BOARD_SIM_AX18T) || defined(RTMIR3G)
+enum {
+	WAN_PORT=1,
+	LAN1_PORT=3,
+	LAN2_PORT=2,
+	LAN3_PORT=4, /* RM2100 and SIM-AX18T; unused on R3G */
+	LAN4_PORT=0, /* SIM-AX18T; unused on R3G/RM2100 */
+	P5_PORT=5,
+	CPU_PORT=6,
+	P7_PORT=7,
+};
+#define MT7621_GSW
+#elif defined(RTCONFIG_BOARD_E8820S)
+enum {
+	WAN_PORT=4,
+	LAN1_PORT=0,
+	LAN2_PORT=1,
+	LAN3_PORT=2,
+	LAN4_PORT=3,
+	P5_PORT=5,
+	CPU_PORT=6,
+	P7_PORT=7,
+};
+#define MT7621_GSW
+#elif defined(RTCONFIG_BOARD_HIWIFI4) || defined(RTCONFIG_BOARD_A040WQ) || defined(RTCONFIG_BOARD_MSG1500) || defined(RTCONFIG_BOARD_R6800) || defined(RTCONFIG_BOARD_R3P) || defined(R6800) || defined(RTMIR3P) || defined(RTA040WQ) || defined(RTMSG1500) || defined(RTAX53U)
 enum {
 	WAN_PORT=4,
 	LAN1_PORT=3,
@@ -204,7 +228,7 @@ enum {
 	P7_PORT=7,
 };
 #define MT7621_GSW
-#elif defined(JCGQ10PRO) || defined(RTCMCCA9) || defined(RTQ20)
+#elif defined(JCGQ10PRO) || defined(JCGQ20) || defined(RTCMCCA9) || defined(RTQ20) || defined(RTXG1)
 enum {
 	WAN_PORT=0,
 	LAN1_PORT=1,
@@ -216,49 +240,13 @@ enum {
 	P7_PORT=7,
 };
 #define MT7621_GSW
-#elif defined(H3CTX1801) || defined(RTTX1801) || defined(RTAX18T) || defined(RTHAR) || defined(RTCR660X)
+#elif defined(H3CTX1801) || defined(XMCR660X)|| defined(RTTX1801) || defined(RTAX18T) || defined(RTHAR) || defined(RTCR660X)
 enum {
 	WAN_PORT=4,
 	LAN1_PORT=3,
 	LAN2_PORT=2,
 	LAN3_PORT=1,
 	LAN4_PORT=0,
-	P5_PORT=5,
-	CPU_PORT=6,
-	P7_PORT=7,
-};
-#define MT7621_GSW
-#elif defined(RTGAX1800)
-enum {
-	WAN_PORT=0,
-	LAN1_PORT=1,
-	LAN2_PORT=2,
-	LAN3_PORT=3,
-	LAN4_PORT=4,
-	P5_PORT=5,
-	CPU_PORT=6,
-	P7_PORT=7,
-};
-#define MT7621_GSW
-#elif defined(RTGAX1800B)
-enum {
-	WAN_PORT=4,
-	LAN1_PORT=3,
-	LAN2_PORT=2,
-	LAN3_PORT=1,
-	LAN4_PORT=0,
-	P5_PORT=5,
-	CPU_PORT=6,
-	P7_PORT=7,
-};
-#define MT7621_GSW
-#elif defined(RTT6M)
-enum {
-	WAN_PORT=0,
-	LAN1_PORT=1
-	LAN2_PORT=2,
-	LAN3_PORT=3,
-	LAN4_PORT=4,
 	P5_PORT=5,
 	CPU_PORT=6,
 	P7_PORT=7,
@@ -490,7 +478,7 @@ int mt7621_reg_read(int offset, unsigned int *value)
          return 0;
 }   
 
-#if defined(RTCONFIG_WLMODULE_MT7615E_AP) || defined(RTCONFIG_WLMODULE_MT7915D_AP)
+#if defined(RTCONFIG_WLMODULE_MT7615E_AP) || defined(RTCONFIG_WLMODULE_MT7915D_AP) ||defined(RTCONFIG_WLMODULE_MT7612E_AP)
 int mt7621_phy_read(int offset, unsigned int *value)
 {
          struct ifreq ifr;
@@ -554,7 +542,7 @@ int mt7621_reg_write(int offset, int value)
 	return 0;
 }	
 #endif
-#if defined(RTCONFIG_WLMODULE_MT7615E_AP) || defined(RTCONFIG_WLMODULE_MT7915D_AP)
+#if defined(RTCONFIG_WLMODULE_MT7615E_AP) || defined(RTCONFIG_WLMODULE_MT7915D_AP) ||defined(RTCONFIG_WLMODULE_MT7612E_AP)
 int mt7621_phy_write(int offset, int reg, int value)
 {
 	struct ifreq ifr;
@@ -835,7 +823,7 @@ int mt7621_vlan_unset(int vid)
 }
 
 
-#if defined(RTCONFIG_WLMODULE_MT7615E_AP) || defined(RTCONFIG_WLMODULE_MT7915D_AP)
+#if defined(RTCONFIG_WLMODULE_MT7615E_AP) || defined(RTCONFIG_WLMODULE_MT7915D_AP) ||defined(RTCONFIG_WLMODULE_MT7612E_AP)
  /**
  * Get TX or RX byte count of WAN and WANS_LAN
  * @unit:	WAN unit.
@@ -1023,14 +1011,14 @@ void set_acceptable_frame_type(int port, int type)
 void set_admit_all_frames()
 {
 	unsigned int value;
-	for (int i = 0; i <= 6; i++)
+	for (int i = 0; i <= NR_WANLAN_PORT; i++)
 		set_acceptable_frame_type(i, 0);
 }
 
 void set_admit_untag_frames()
 {
 	unsigned int value;
-	for (int i = 0; i <= 6; i++)
+	for (int i = 0; i <= NR_WANLAN_PORT; i++)
 		set_acceptable_frame_type(i, 2);
 }
 
@@ -1354,7 +1342,7 @@ static void link_down_up_mt7620_PHY(unsigned int mask, int status, int inverse)
 static void link_down_up_mt7621_PHY(unsigned int mask, int status, int inverse)
 #endif   
 {
-#if defined(RTCONFIG_WLMODULE_MT7615E_AP) || defined(RTCONFIG_WLMODULE_MT7915D_AP)
+#if defined(RTCONFIG_WLMODULE_MT7615E_AP) || defined(RTCONFIG_WLMODULE_MT7915D_AP) ||defined(RTCONFIG_WLMODULE_MT7612E_AP)
  	int i;
 	unsigned int m;
 
@@ -1593,7 +1581,7 @@ static void initialize_Vlan(int stb_bitmask)
 	switch_fini();
 }
 
-#if defined(RTN14U) || defined(RTAC52U) || defined(RTAC51U) || defined(RTN11P) || defined(RTN300) || defined(RTN54U) || defined(RTAC1200HP) || defined(RTN56UB1) || defined(RTN56UB2) || defined(RTAC54U) || defined(RTAC1200GA1) || defined(RTAC1200GU) || defined(RPAC87) || defined(RTAC85U) || defined(RTAC85P)|| defined(RTMIR3P) || defined(RTA040WQ) || defined(RTMSG1500) || defined(RTN800HP) || defined(RTACRH26) || defined(TUFAC1750) || defined(RMAC2100) || defined(R6800)
+#if defined(RTCONFIG_WLMODULE_MT7615E_AP) ||defined(RTCONFIG_WLMODULE_MT7612E_AP)
 static void fix_up_hwnat_for_wifi(void)
 {
 	int i, j, m, r, v, isp_profile_hwnat_not_safe = 0;
@@ -1601,7 +1589,7 @@ static void fix_up_hwnat_for_wifi(void)
 	char bss[] = "wl0.1_bss_enabledXXXXXX";
 	char mode_x[] = "wl0_mode_xXXXXXX";
 	struct wifi_if_vid_s w = {
-#if defined(RTAC52U) || defined(RTAC51U) || defined(RTN54U) || defined(RTAC1200HP) || defined(RTN56UB1) || defined(RTN56UB2) || defined(RTAC54U) || defined(RTAC1200GA1) || defined(RTAC1200GU) || defined(RPAC87) || defined(RTAC85U) || defined(RTAC85P)|| defined(RTMIR3P) || defined(RTA040WQ) || defined(RTMSG1500) || defined(RTN800HP) || defined(RTACRH26) || defined(TUFAC1750) || defined(RMAC2100) || defined(R6800)
+#if defined(RTCONFIG_WLMODULE_MT7615E_AP) ||defined(RTCONFIG_WLMODULE_MT7612E_AP)
 		.wl_vid = { 21, 43 },		/* DP_RA0  ~ DP_RA3:  21, 22, 23, 24;	DP_RAI0  ~ DP_RAI3:  43, 44, 45, 46 */
 		.wl_wds_vid = { 37, 59 },	/* DP_WDS0 ~ DP_WDS3: 37, 38, 39, 40;	DP_WDSI0 ~ DP_WDSI3: 59, 60, 61, 62 */
 #elif defined(RTN14U) || defined(RTN11P) || defined(RTN300)
@@ -2536,7 +2524,12 @@ void ATE_mt7621_esw_port_status(void)
 #if defined(RTCONFIG_CONCURRENTREPEATER) && defined(RPAC87)
 		snprintf(buf, sizeof(buf), "L1=%C",
 		(pS.link[ WAN_PORT] == 1) ? (pS.speed[ WAN_PORT] == 2) ? 'G' : 'M': 'X');
-#elif defined(RTAX53U)
+#elif defined(RTCONFIG_BOARD_R3G)
+	snprintf(buf, sizeof(buf), "W0=%C;L1=%C;L2=%C;",
+		(pS.link[WAN_PORT] == 1) ? (pS.speed[WAN_PORT] == 2) ? 'G' : 'M': 'X',
+		(pS.link[LAN1_PORT] == 1) ? (pS.speed[LAN1_PORT] == 2) ? 'G' : 'M': 'X',
+		(pS.link[LAN2_PORT] == 1) ? (pS.speed[LAN2_PORT] == 2) ? 'G' : 'M': 'X');
+#elif (defined(RTAX53U) && !defined(RTCONFIG_BOARD_A040WQ) && !defined(RTCONFIG_BOARD_MSG1500) && !defined(RTCONFIG_BOARD_R6800) && !defined(RTCONFIG_BOARD_SIM_AX18T) && !defined(RTCONFIG_BOARD_E8820S)) || defined(RTCONFIG_3LANPORT_DEVICE)
 	snprintf(buf, sizeof(buf), "W0=%C;L1=%C;L2=%C;L3=%C;",
 		(pS.link[ WAN_PORT] == 1) ? (pS.speed[ WAN_PORT] == 2) ? 'G' : 'M': 'X',
 		(pS.link[LAN1_PORT] == 1) ? (pS.speed[LAN1_PORT] == 2) ? 'G' : 'M': 'X',
@@ -2679,4 +2672,3 @@ void usage(char *cmd)
 	exit(0);
 }
 #endif
-

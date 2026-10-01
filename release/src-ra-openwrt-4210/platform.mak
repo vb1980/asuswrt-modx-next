@@ -27,6 +27,7 @@ export BUILD := $(shell (gcc -dumpmachine))
 export KERNEL_BINARY=$(LINUXDIR)/vmlinux
 ifeq ($(MT7621),y)
 export MUSL32=y
+export PLATFORM_ROUTER := mt7621
 export PLATFORM := mipsel-musl
 export PLATFORM_ARCH := mipsel-musl
 export TOOLS :=/opt/toolchain-mipsel_24kc_gcc-5.4.0_musl-1.1.24
@@ -214,7 +215,8 @@ FIRST_IF_POOL =		\
 	"MT7612E"	\
 	"MT7603E"	\
 	"MT7602E"	\
-	"MT7615E"
+	"MT7615E"	\
+	"MT7915"
 
 SECOND_IF_POOL = 	\
 	"NONE"		\
@@ -524,6 +526,7 @@ define platformKernelConfig
 	done; \
 	for sec_if in $(SECOND_IF_POOL) ; do \
 		sed -i "/CONFIG_MTD_$${sec_if}_RALINK\>/d" $(1); \
+		sed -i "/CONFIG_SECOND_IF_$${sec_if}\>/d" $(1); \
 		if [ "$(SECOND_IF)" = "$${sec_if}" ] ; then \
 			echo "CONFIG_SECOND_IF_$${sec_if}=y" >> $(1); \
 		else \
@@ -581,50 +584,122 @@ define platformKernelConfig
 		echo "CONFIG_MT7610_ED_MONITOR=y" >>$(1); \
 	fi; \
 	if [ "$(FIRST_IF)" = "MT7603E" ] ; then \
-		sed -i "/CONFIG_WIFI_MT7603E/d" $(1); \
-		echo "CONFIG_WIFI_MT7603E=m" >>$(1); \
-		sed -i "/CONFIG_UAPSD/d" $(1); \
-		echo "CONFIG_UAPSD=y" >>$(1); \
-		sed -i "/CONFIG_MT_MAC/d" $(1); \
-		echo "CONFIG_MT_MAC=y" >>$(1); \
-		sed -i "/CONFIG_RLT_MAC/d" $(1); \
-		echo "#CONFIG_RLT_MAC is not set" >>$(1); \
-		sed -i "/CONFIG_RLT_AP_SUPPORT/d" $(1); \
-		echo "#CONFIG_RLT_AP_SUPPORT is not set" >>$(1); \
-		sed -i "/CONFIG_SNIFFER_SUPPORT/d" $(1); \
-		echo "CONFIG_SNIFFER_SUPPORT=y" >>$(1); \
-		sed -i "/CONFIG_ACL_V2_SUPPORT/d" $(1); \
-		echo "CONFIG_ACL_V2_SUPPORT=y" >>$(1); \
-		sed -i "/CONFIG_SNIFFER_MIB_CMD/d" $(1); \
-		echo "# CONFIG_SNIFFER_MIB_CMD is not set" >>$(1); \
-		sed -i "/CONFIG_ALL_NET_EVENT/d" $(1); \
-		echo "# CONFIG_ALL_NET_EVENT is not set" >>$(1); \
-		sed -i "/CONFIG_MCAST_RATE_SPECIFIC/d" $(1); \
-		echo "# CONFIG_MCAST_RATE_SPECIFIC is not set" >>$(1); \
-		sed -i "/CONFIG_BTCOEX_CONCURRENT/d" $(1); \
-		echo "# CONFIG_BTCOEX_CONCURRENT is not set" >>$(1); \
-		if [ "$(RTN56UB1)" = "y" ] || [ "$(RTN56UB2)" = "y" ] ; then \
-			if [ "$(MT7603_INTERNAL_PA_EXTERNAL_LNA)" = "y" ] ; then \
-				sed -i "/CONFIG_MT7603E_INTERNAL_PA_EXTERNAL_LNA/d" $(1); \
-				echo "CONFIG_MT7603E_INTERNAL_PA_EXTERNAL_LNA=y" >>$(1); \
-			else \
-				sed -i "/CONFIG_MT7603E_INTERNAL_PA_EXTERNAL_LNA/d" $(1); \
-				echo "# CONFIG_MT7603E_INTERNAL_PA_EXTERNAL_LNA is not set" >>$(1); \
-			fi; \
-			if [ "$(MT7603_EXTERNAL_PA_EXTERNAL_LNA)" = "y" ] ; then \
-				sed -i "/CONFIG_MT7603E_EXTERNAL_PA_EXTERNAL_LNA/d" $(1); \
-				echo "CONFIG_MT7603E_EXTERNAL_PA_EXTERNAL_LNA=y" >>$(1); \
-			else \
-				sed -i "/CONFIG_MT7603E_EXTERNAL_PA_EXTERNAL_LNA/d" $(1); \
-				echo "# CONFIG_MT7603E_EXTERNAL_PA_EXTERNAL_LNA is not set" >>$(1); \
-			fi; \
-		fi; \
+		sed -i "/CONFIG_CHIP_MT7603E/d" $(1); \
+		echo "CONFIG_CHIP_MT7603E=y" >>$(1); \
+		sed -i "/CONFIG_FIRST_IF_MT7603E/d" $(1); \
+		echo "CONFIG_FIRST_IF_MT7603E=y" >>$(1); \
+		sed -i "/CONFIG_FIRST_IF_MT7615E/d" $(1); \
+		echo "# CONFIG_FIRST_IF_MT7615E is not set" >>$(1); \
+		sed -i "/CONFIG_RT_FIRST_CARD/d" $(1); \
+		echo "CONFIG_MT7603E_RLT_WIFI=m" >>$(1); \
+		echo "CONFIG_MT7603E_MT_WIFI_PATH=\"rlt_wifi\"" >>$(1); \
+		echo "# CONFIG_MT7603E_FIRST_IF_EEPROM_PROM is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_FIRST_IF_EEPROM_EFUSE is not set" >>$(1); \
+		echo "CONFIG_MT7603E_FIRST_IF_EEPROM_FLASH=y" >>$(1); \
+		echo "CONFIG_MT7603E_RT_FIRST_CARD_EEPROM=\"flash\"" >>$(1); \
+		echo "CONFIG_MT7603E_MULTI_INF_SUPPORT=y" >>$(1); \
+		echo "CONFIG_MT7603E_WIFI_BASIC_FUNC=y" >>$(1); \
+		echo "CONFIG_MT7603E_WSC_INCLUDED=y" >>$(1); \
+		echo "CONFIG_MT7603E_WSC_V2_SUPPORT=y" >>$(1); \
+		echo "# CONFIG_MT7603E_WSC_NFC_SUPPORT is not set" >>$(1); \
+		echo "CONFIG_MT7603E_DOT11N_DRAFT3=y" >>$(1); \
+		echo "CONFIG_MT7603E_DOT11W_PMF_SUPPORT=y" >>$(1); \
+		echo "CONFIG_MT7603E_LLTD_SUPPORT=y" >>$(1); \
+		echo "# CONFIG_MT7603E_QOS_DLS_SUPPORT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_WAPI_SUPPORT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_CARRIER_DETECTION_SUPPORT is not set" >>$(1); \
+		echo "CONFIG_MT7603E_IGMP_SNOOP_SUPPORT=y" >>$(1); \
+		echo "# CONFIG_MT7603E_BLOCK_NET_IF is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_DMA_CACHE_OPTIMIZE is not set" >>$(1); \
+		echo "CONFIG_MT7603E_RATE_ADAPTION=y" >>$(1); \
+		echo "CONFIG_MT7603E_NEW_RATE_ADAPT_SUPPORT=y" >>$(1); \
+		echo "# CONFIG_MT7603E_AGS_SUPPORT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_IDS_SUPPORT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_WIFI_WORK_QUEUE is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_WIFI_SKB_RECYCLE is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_PUSH_SUPPORT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_EVENT_NOTIFIER_SUPPORT is not set" >>$(1); \
+		echo "CONFIG_MT7603E_SMART_CARRIER_SENSE_SUPPORT=y" >>$(1); \
+		echo "# CONFIG_MT7603E_MBO_SUPPORT is not set" >>$(1); \
+		echo "CONFIG_MT7603E_RTMP_FLASH_SUPPORT=y" >>$(1); \
+		echo "# CONFIG_MT7603E_MWDS_SUPPORT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_AIR_MONITOR_SUPPORT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_STA_FORCE_ROAM_SUPPORT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_ROAMING_ENHANCE_SUPPORT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_WIFI_FWD_UPDATED is not set" >>$(1); \
+		echo "# CONFIG_MT_BTCOEX_CONCURRENT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_LED_CONTROL_SUPPORT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_SINGLE_SKU_V2 is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_ATE_SUPPORT is not set" >>$(1); \
+		echo "CONFIG_MT7603E_RT2860V2_AP_V24_DATA_STRUCTURE=y" >>$(1); \
+		echo "# CONFIG_MT7603E_MEMORY_OPTIMIZATION is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_HOTSPOT is not set" >>$(1); \
+		echo "CONFIG_MT7603E_UAPSD=y" >>$(1); \
+		echo "CONFIG_MT7603E_IPA_ILNA=y" >>$(1); \
+		echo "# CONFIG_MT7603E_IPA_ELNA is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_EPA_ILNA is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_EPA_ELNA is not set" >>$(1); \
+		echo "CONFIG_MT7603E_PA_LNA=\"iPAiLNA\"" >>$(1); \
+		echo "# CONFIG_MT7603E_RLT_MAC is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_RTMP_MAC is not set" >>$(1); \
+		echo "CONFIG_MT7603E_RTMP_PCI_SUPPORT=y" >>$(1); \
+		echo "CONFIG_MT7603E_WIFI_MODE_AP=y" >>$(1); \
+		echo "# CONFIG_MT7603E_WIFI_MODE_STA is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_WIFI_MODE_BOTH is not set" >>$(1); \
+		echo "CONFIG_MT7603E_RLT_AP_SUPPORT=m" >>$(1); \
+		echo "CONFIG_MT7603E_WDS_SUPPORT=y" >>$(1); \
+		echo "CONFIG_MT7603E_MBSS_SUPPORT=y" >>$(1); \
+		echo "CONFIG_MT7603E_SNIFFER_SUPPORT=y" >>$(1); \
+		echo "# CONFIG_MT7603E_CFG80211_SUPPORT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_SNIFFER_MIB_CMD is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_ALL_NET_EVENT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_ACL_V2_SUPPORT is not set" >>$(1); \
+		echo "CONFIG_MT7603E_APCLI_SUPPORT=y" >>$(1); \
+		echo "# CONFIG_ROAMING_ENHANCE_SUPPORT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_MULTI_APCLI_SUPPORT is not set" >>$(1); \
+		echo "CONFIG_MT7603E_MAC_REPEATER_SUPPORT=y" >>$(1); \
+		echo "# CONFIG_MT7603E_AIRPLAY_SUPPORT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_DFS_SUPPORT is not set" >>$(1); \
+		echo "CONFIG_MT7603E_DOT11R_FT_SUPPORT=y" >>$(1); \
+		echo "CONFIG_MT7603E_DOT11K_RRM_SUPPORT=y" >>$(1); \
+		echo "CONFIG_MT7603E_WNM_SUPPORT=y" >>$(1); \
+		echo "# CONFIG_MT7603E_INTERWORKING is not set" >>$(1); \
+		echo "CONFIG_MT7603E_MAP_SUPPORT=y" >>$(1); \
+		echo "# CONFIG_MT7603E_BAND_STEERING_7603 is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_OFFCHANNEL_SCAN_FEATURE is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_NINTENDO_AP is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_COC_SUPPORT is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_MCAST_RATE_SPECIFIC is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_PREVENT_ARP_SPOOFING_SUPPORT is not set" >>$(1); \
+		echo "CONFIG_MT7603E_SECURITY_IMPROVEMENT_SUPPORT=y" >>$(1); \
+		echo "CONFIG_MT7603E_WPA3_SUPPORT=y" >>$(1); \
+		echo "CONFIG_MT7603E_OWE_SUPPORT=y" >>$(1); \
+		echo "CONFIG_MT7603E_NEW_BW2040_COEXIST_SUPPORT=y" >>$(1); \
+		echo "# CONFIG_MT7603E_RALINK_RT28XX is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_RALINK_RT3092 is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_RALINK_RT3572 is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_RALINK_RT5392 is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_RALINK_RT5572 is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_RALINK_RT5592 is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_RALINK_RT6352 is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_RALINK_MT7610E is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_RALINK_MT7610U is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_RALINK_RT8592 is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_RALINK_MT7612E is not set" >>$(1); \
+		echo "# CONFIG_MT7603E_RALINK_MT7612U is not set" >>$(1); \
+		echo "CONFIG_MT7603E_RALINK_MT7603E=y" >>$(1); \
+		echo "# CONFIG_MT7603E_RALINK_MT7603U is not set" >>$(1); \
+		echo "CONFIG_MT7603E_MT_MAC=y" >>$(1); \
 	fi; \
 	if [ "$(SECOND_IF)" = "MT7612E" ] ; then \
 		sed -i "/CONFIG_RLT_WIFI/d" $(1); \
 		echo "CONFIG_RLT_WIFI=m" >>$(1); \
 		sed -i "/CONFIG_WIFI_MT7612E/d" $(1); \
 		echo "CONFIG_WIFI_MT7612E=m" >>$(1); \
+		sed -i "/CONFIG_RT_SECOND_IF_MT7612E/d" $(1); \
+		echo "CONFIG_RT_SECOND_IF_MT7612E=y" >>$(1); \
+		sed -i "/CONFIG_SECOND_IF_NONE/d" $(1); \
+		echo "# CONFIG_SECOND_IF_NONE is not set" >>$(1); \
 		sed -i "/CONFIG_FIRST_IF_EEPROM_PROM/d" $(1); \
 		echo "# CONFIG_FIRST_IF_EEPROM_PROM is not set" >>$(1); \
 		sed -i "/CONFIG_FIRST_IF_EEPROM_EFUSE/d" $(1); \
@@ -808,36 +883,88 @@ define platformKernelConfig
 		echo "# CONFIG_RA_NAT_NONE is not set" >>$(1); \
 		sed -i "/CONFIG_RA_NAT_HW/d" $(1); \
 		echo "CONFIG_RA_NAT_HW=y" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP/d" $(1); \
+		echo "CONFIG_MT76X2_AP=m" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_LED/d" $(1); \
+		echo "CONFIG_MT76X2_AP_LED=y" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_LLTD/d" $(1); \
+		echo "CONFIG_MT76X2_AP_LLTD=y" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_WDS/d" $(1); \
+		echo "CONFIG_MT76X2_AP_WDS=y" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_MBSS/d" $(1); \
+		echo "CONFIG_MT76X2_AP_MBSS=y" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_APCLI/d" $(1); \
+		echo "CONFIG_MT76X2_AP_APCLI=y" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_80211AC_VHT/d" $(1); \
+		echo "CONFIG_MT76X2_AP_80211AC_VHT=y" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_MBSS_NEW_MBSSID_MODE/d" $(1); \
+		echo "# CONFIG_MT76X2_AP_MBSS_NEW_MBSSID_MODE is not set" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_APCLI_CERT/d" $(1); \
+		echo "# CONFIG_MT76X2_AP_APCLI_CERT is not set" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_APCLI_AUTO_BW/d" $(1); \
+		echo "# CONFIG_MT76X2_AP_APCLI_AUTO_BW is not set" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_MAC_REPEATER/d" $(1); \
+		echo "# CONFIG_MT76X2_AP_MAC_REPEATER is not set" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_MWDS/d" $(1); \
+		echo "# CONFIG_MT76X2_AP_MWDS is not set" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_SMART_MESH/d" $(1); \
+		echo "# CONFIG_MT76X2_AP_SMART_MESH is not set" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_CON_WPS/d" $(1); \
+		echo "# CONFIG_MT76X2_AP_CON_WPS is not set" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_AIRPLAY/d" $(1); \
+		echo "# CONFIG_MT76X2_AP_AIRPLAY is not set" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_DFS/d" $(1); \
+		echo "# CONFIG_MT76X2_AP_DFS is not set" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_CARRIER/d" $(1); \
+		echo "# CONFIG_MT76X2_AP_CARRIER is not set" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_IDS/d" $(1); \
+		echo "# CONFIG_MT76X2_AP_IDS is not set" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_DLS/d" $(1); \
+		echo "# CONFIG_MT76X2_AP_DLS is not set" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_TXBF_SUPPORT/d" $(1); \
+		echo "# CONFIG_MT76X2_AP_TXBF_SUPPORT is not set" >>$(1); \
+		sed -i "/CONFIG_MT76X2_AP_ADJ_PWR_CONSUMPTION/d" $(1); \
+		echo "# CONFIG_MT76X2_AP_ADJ_PWR_CONSUMPTION is not set" >>$(1); \
+		sed -i "/CONFIG_RT_SINGLE_SKU/d" $(1); \
+		echo "# CONFIG_RT_SINGLE_SKU is not set" >>$(1); \
+		sed -i "/CONFIG_RT_BAND_STEERING/d" $(1); \
+		echo "# CONFIG_RT_BAND_STEERING is not set" >>$(1); \
+		sed -i "/CONFIG_RT_DOT11R_FT/d" $(1); \
+		echo "# CONFIG_RT_DOT11R_FT is not set" >>$(1); \
+		sed -i "/CONFIG_RT_DOT11K_RRM/d" $(1); \
+		echo "# CONFIG_RT_DOT11K_RRM is not set" >>$(1); \
+		sed -i "/CONFIG_RT_80211N_DRAFT3/d" $(1); \
+		echo "CONFIG_RT_80211N_DRAFT3=y" >>$(1); \
+		sed -i "/CONFIG_RT_80211W_PMF/d" $(1); \
+		echo "# CONFIG_RT_80211W_PMF is not set" >>$(1); \
+		sed -i "/CONFIG_RT_WSC/d" $(1); \
+		echo "# CONFIG_RT_WSC is not set" >>$(1); \
+		sed -i "/CONFIG_RT_ED_MONITOR/d" $(1); \
+		echo "# CONFIG_RT_ED_MONITOR is not set" >>$(1); \
+		sed -i "/CONFIG_RT_IGMP_SNOOP/d" $(1); \
+		echo "# CONFIG_RT_IGMP_SNOOP is not set" >>$(1); \
+		sed -i "/CONFIG_RT_MCAST_RATE_SPECIFIC/d" $(1); \
+		echo "# CONFIG_RT_MCAST_RATE_SPECIFIC is not set" >>$(1); \
+		sed -i "/CONFIG_RT_DELAYED_TCP_ACK/d" $(1); \
+		echo "# CONFIG_RT_DELAYED_TCP_ACK is not set" >>$(1); \
+		sed -i "/CONFIG_RT_NETIF_BLOCK/d" $(1); \
+		echo "# CONFIG_RT_NETIF_BLOCK is not set" >>$(1); \
+		sed -i "/CONFIG_RT_SNMP/d" $(1); \
+		echo "# CONFIG_RT_SNMP is not set" >>$(1); \
+		sed -i "/CONFIG_RT_CFG80211/d" $(1); \
+		echo "# CONFIG_RT_CFG80211 is not set" >>$(1); \
+		sed -i "/CONFIG_RT_MEMORY_OPTIMIZATION/d" $(1); \
+		echo "# CONFIG_RT_MEMORY_OPTIMIZATION is not set" >>$(1); \
+		sed -i "/CONFIG_RT_DEBUG/d" $(1); \
+		echo "# CONFIG_RT_DEBUG is not set" >>$(1); \
+		sed -i "/CONFIG_RT_MAX_CLIENTS/d" $(1); \
+		echo "CONFIG_RT_MAX_CLIENTS=32" >>$(1); \
+		sed -i "/CONFIG_RT_READ_MAC_FROM_MTD/d" $(1); \
+		echo "CONFIG_RT_READ_MAC_FROM_MTD=y" >>$(1); \
+		sed -i "/CONFIG_WL_TI/d" $(1); \
+		echo "# CONFIG_WL_TI is not set" >>$(1); \
 	fi; \
 	if [ "$(REPEATER)" = "y" ] ; then \
-			sed -i "/CONFIG_RT2860V2_AP_APCLI/d" $(1); \
-			echo "CONFIG_RT2860V2_AP_APCLI=y" >>$(1); \
-			sed -i "/CONFIG_RT2860V2_AP_MAC_REPEATER/d" $(1); \
-			echo "CONFIG_RT2860V2_AP_MAC_REPEATER=y" >>$(1); \
-		if [ "$(SECOND_IF)" = "MT7610E" ] ; then \
-			sed -i "/CONFIG_MT7610_AP_APCLI/d" $(1); \
-			echo "CONFIG_MT7610_AP_APCLI=y" >>$(1); \
-			sed -i "/CONFIG_MT7610_AP_MAC_REPEATER/d" $(1); \
-			echo "CONFIG_MT7610_AP_MAC_REPEATER=y" >>$(1); \
-			sed -i "/CONFIG_M7610_CON_WPS_SUPPORT/d" $(1); \
-			echo "# CONFIG_M7610_CON_WPS_SUPPORT is not set" >>$(1); \
-		fi; \
-		if [ "$(SECOND_IF)" = "MT7612E" ] ; then \
-			sed -i "/CONFIG_APCLI_SUPPORT/d" $(1); \
-			echo "CONFIG_APCLI_SUPPORT=y" >>$(1); \
-			sed -i "/CONFIG_MAC_REPEATER_SUPPORT/d" $(1); \
-			echo "# CONFIG_MAC_REPEATER_SUPPORT is not set" >>$(1); \
-			sed -i "/CONFIG_APCLI_CERT_SUPPORT/d" $(1); \
-			echo "# CONFIG_APCLI_CERT_SUPPORT is not set" >>$(1); \
-		fi; \
-		if [ "$(FIRST_IF)" = "MT7615E" ] || [ "$(SECOND_IF)" = "MT7615E" ] ; then \
-			sed -i "/CONFIG_APCLI_SUPPORT/d" $(1); \
-			echo "CONFIG_APCLI_SUPPORT=y" >>$(1); \
-			sed -i "/CONFIG_MAC_REPEATER_SUPPORT/d" $(1); \
-			echo "CONFIG_MAC_REPEATER_SUPPORT=y" >>$(1); \
-			sed -i "/CONFIG_APCLI_CERT_SUPPORT/d" $(1); \
-			echo "CONFIG_APCLI_CERT_SUPPORT=y" >>$(1); \
-		fi; \
 		if [ "$(RPAC87)" = "y" ] ; then \
 			sed -i "/CONFIG_RA_NAT_HW/d" $(1); \
 			echo "# CONFIG_RA_NAT_HW is not set" >>$(1); \
@@ -1079,8 +1206,40 @@ define platformKernelConfig
 		sed -i "/CONFIG_ASUS_FORCE4/d" $(1); \
 		echo "CONFIG_ASUS_FORCE4=y" >>$(1); \
 	fi; \
+	if [ "$(BUILD_NAME)" = "RT-AX53U" ] || [ "$(BUILD_NAME)" = "RT-AX54" ] || [ "$(BUILD_NAME)" = "4G-AX56" ] || [ "$(BUILD_NAME)" = "H3C-TX1801" ] ; then \
+		sed -i "/CONFIG_NMBM/d" $(1); \
+		echo "CONFIG_NMBM=y" >>$(1); \
+		echo "# CONFIG_NMBM_LOG_LEVEL_DEBUG is not set" >>$(1); \
+		echo "CONFIG_NMBM_LOG_LEVEL_INFO=y" >>$(1); \
+		echo "# CONFIG_NMBM_LOG_LEVEL_WARN is not set" >>$(1); \
+		echo "# CONFIG_NMBM_LOG_LEVEL_ERR is not set" >>$(1); \
+		echo "# CONFIG_NMBM_LOG_LEVEL_EMERG is not set" >>$(1); \
+		echo "# CONFIG_NMBM_LOG_LEVEL_NONE is not set" >>$(1); \
+		echo "CONFIG_NMBM_MTD=y" >>$(1); \
+	fi; \
+	if [ "$(BUILD_NAME)" = "RT-AX53U" ] || [ "$(BUILD_NAME)" = "RT-AX54" ] || [ "$(BUILD_NAME)" = "4G-AX56" ] ; then \
+		sed -i "/CONFIG_MTD_SPLIT_SEAMA_FW/d" $(1); \
+		echo "CONFIG_MTD_SPLIT_SEAMA_FW=y" >>$(1); \
+		sed -i "/CONFIG_MTD_SPLIT_UIMAGE_FW/d" $(1); \
+		echo "CONFIG_MTD_SPLIT_UIMAGE_FW=y" >>$(1); \
+		sed -i "/CONFIG_MTD_SPLIT_FIT_FW/d" $(1); \
+		echo "CONFIG_MTD_SPLIT_FIT_FW=y" >>$(1); \
+		sed -i "/CONFIG_MTD_SPLIT_TRX_FW/d" $(1); \
+		echo "CONFIG_MTD_SPLIT_TRX_FW=y" >>$(1); \
+		sed -i "/CONFIG_MTD_SPLIT_ASUS_FW/d" $(1); \
+		echo "# CONFIG_MTD_SPLIT_ASUS_FW is not set" >>$(1); \
+		sed -i "/CONFIG_MTD_VIRT_CONCAT/d" $(1); \
+		echo "# CONFIG_MTD_VIRT_CONCAT is not set" >>$(1); \
+	fi; \
+	if [ "$(JFFS2)" != "y" ]; then \
+		sed -i "/CONFIG_JFFS2/d" $(1); \
+		echo "# CONFIG_JFFS2_FS is not set" >>$(1); \
+	fi; \
+	if [ "$(BUILD_NAME)" = "RT-AX53U" ] || [ "$(BUILD_NAME)" = "RT-AX54" ] || [ "$(BUILD_NAME)" = "4G-AX56" ] || [ "$(BUILD_NAME)" = "H3C-TX1801" ] || [ "$(BUILD_NAME)" = "JCG-Q10PRO" ] || [ "$(BUILD_NAME)" = "PGB-M1" ] || [ "$(BUILD_NAME)" = "XM-CR660X" ] || [ "$(BUILD_NAME)" = "RT-TX1801" ] || [ "$(BUILD_NAME)" = "RT-AX18T" ] || [ "$(BUILD_NAME)" = "RT-HAR" ] || [ "$(BUILD_NAME)" = "RT-CR660X" ]|| [ "$(BUILD_NAME)" = "RT-MIR3G" ] || [ "$(BUILD_NAME)" = "RT-CMCCA9" ] || [ "$(BUILD_NAME)" = "RT-Q20" ] || [ "$(BUILD_NAME)" = "JCG-Q20" ] || [ "$(BUILD_NAME)" = "RT-XG1" ] ; then \
+		sed -i "/CONFIG_MTK_NAND_BLOCK2/d" $(1); \
+		echo "CONFIG_MTK_NAND_BLOCK2=y" >>$(1); \
+	fi; \
 	)
 endef
 
 export PARALLEL_BUILD := -j$(shell grep -c '^processor' /proc/cpuinfo)
-

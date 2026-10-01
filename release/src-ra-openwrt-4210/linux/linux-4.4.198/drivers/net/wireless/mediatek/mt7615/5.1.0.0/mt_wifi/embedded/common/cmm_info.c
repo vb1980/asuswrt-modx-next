@@ -5048,10 +5048,10 @@ max_len += WPS_LINE_LEN;
 //	sprintf(msg + strlen(msg), "%-4s%-4s%-33s%-20s%-23s%-9s%-7s%-7s%-3s%-8s\n",
 //			"No", "Ch", "SSID", "BSSID", "Security", "Siganl(%)", "W-Mode", " ExtCH", " NT", " SSID_Len");
 	sprintf(msg + strlen(msg), "%-4s%-33s%-20s%-23s%-9s%-12s%-7s%-3s\n",
-			"Ch", "SSID", "BSSID", "Security", "Signal(%)", "W-Mode", " ExtCH", " NT");
+			"Ch", "SSID", "BSSID", "Security", "Signal(%)", "W-Mode", "ExtCH", "NT");
 
 #ifdef WSC_INCLUDED
-	sprintf(msg + strlen(msg) - 1, "%-4s%-5s\n", " WPS", " DPID");
+	sprintf(msg + strlen(msg) - 1, "%-4s%-5s\n", "WPS", "DPID");
 #endif /* WSC_INCLUDED */
 //	sprintf(msg + strlen(msg) - 1, "%-8s\n", " BcnRept");
 #ifdef APCLI_OWE_SUPPORT
@@ -8883,8 +8883,10 @@ void wifi_dump_info(void)
 	MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s--------------------\n", __func__));
 
 	for (idx = 0; idx < MAX_NUM_OF_INF; idx++) {
-		if (adapt_list[idx]) {
-			pAd = adapt_list[idx];
+#ifdef MULTI_INF_SUPPORT
+		pAd = adapt_list[idx];
+#endif
+		if (pAd) {
 			show_tpinfo_proc(pAd, "");
 			show_trinfo_proc(pAd, "");
 			ShowPLEInfo(pAd, "");

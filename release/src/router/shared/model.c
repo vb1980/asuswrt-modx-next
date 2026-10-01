@@ -37,8 +37,6 @@ static const struct model_s model_list[] = {
 	{ "RT-MIR3P",		MODEL_RTMIR3P		},
 	{ "RT-A040WQ",		MODEL_RTA040WQ		},
 	{ "RT-MSG1500",		MODEL_RTMSG1500		},
-	{ "RT-A040WQ",		MODEL_RTA040WQ		},
-	{ "RT-MSG1500",		MODEL_RTMSG1500		},
 	{ "RT-ACRH26",		MODEL_RTACRH26		},
 	{ "TUF-AC1750",		MODEL_TUFAC1750		},
 	{ "RT-AC65U",		MODEL_RTAC85U		},
@@ -96,25 +94,27 @@ static const struct model_s model_list[] = {
 	{ "RT-AXE95Q",		MODEL_RTAXE95Q		},
 	{ "ET8PRO",		MODEL_ET8PRO		},
 	{ "RT-AX56_XD4",	MODEL_RTAX56_XD4	},
-	{ "XD4PRO",	        MODEL_XD4PRO	        },
+	{ "XD4PRO",	MODEL_XD4PRO	},
 	{ "CT-AX56_XD4",	MODEL_CTAX56_XD4	},
 	{ "RT-AX58U",		MODEL_RTAX58U		},
 	{ "TUF-AX3000",		MODEL_RTAX58U		},
-	{ "TUF-AX5400",     	MODEL_RTAX58U		},
-	{ "RT-AX82U",       	MODEL_RTAX58U		},
+	{ "TUF-AX5400",         MODEL_RTAX58U		},
+	{ "TUF-AX5400_V2",      MODEL_TUFAX5400_V2      },
+	{ "RT-AX82U",           MODEL_RTAX58U		},
 	{ "RT-AX82_XD6",	MODEL_RTAX58U		},
 	{ "GS-AX3000",		MODEL_RTAX58U		},
 	{ "GS-AX5400",		MODEL_RTAX58U		},
 	{ "RT-AX82U_V2",	MODEL_RTAX82U_V2	},
 	{ "RT-AX82_XD6S",	MODEL_RTAX82_XD6S	},
 	{ "RT-AX3000N",		MODEL_RTAX3000N		},
+	{ "BR63",		MODEL_BR63		},
 	{ "RT-AX58U_V2",	MODEL_RTAX58U_V2	},
 	{ "TUF-AX3000_V2",	MODEL_TUFAX3000_V2	},
 	{ "RT-AXE7800",		MODEL_RTAXE7800		},
 	{ "GT10",		MODEL_GT10		},
 	{ "RT-AX56U",		MODEL_RTAX56U		},
-	{ "RP-AX56",        	MODEL_RPAX56        	},
-	{ "RP-AX58",        	MODEL_RPAX58       	},
+	{ "RP-AX56",            MODEL_RPAX56            },
+	{ "RP-AX58",            MODEL_RPAX58            },
 	{ "RT-AX55",		MODEL_RTAX55		},
 	{ "RT-AX1800",		MODEL_RTAX55		},
 	{ "RT-AX86U",		MODEL_RTAX86U		},
@@ -124,46 +124,58 @@ static const struct model_s model_list[] = {
 	{ "RT-AC68U_V4",	MODEL_RTAC68U_V4	},
 	{ "GT-AX6000",		MODEL_GTAX6000		},
 	{ "GT-AXE11000",	MODEL_GTAXE11000	},
-	{ "GT-AX11000_PRO",	MODEL_GTAX11000_PRO	},
+	{ "GT-AX11000_PRO",     MODEL_GTAX11000_PRO     },
 	{ "GT-AXE16000",	MODEL_GTAXE16000	},
 	{ "ET12",		MODEL_ET12		},
 	{ "XT12",		MODEL_XT12		},
 	{ "RT-AX86U_PRO",	MODEL_RTAX86U_PRO	},
+	{ "RT-AX88U_PRO",       MODEL_RTAX88U_PRO       },
 	{ "DSL-AX82U",		MODEL_DSLAX82U		},
-	{ "K3", 		MODEL_K3 		},
+	{ "BM68",		MODEL_BM68		},
+	{ "ET8_V2",		MODEL_ET8_V2		},
+	{ "XD6_V2",		MODEL_XD6_V2		},
+	{ "RT-AX5400",		MODEL_RTAX5400		},
+	{ "BC109",		MODEL_BC109		},
+	{ "EBG19",		MODEL_EBG19		},
+	{ "EBG15",		MODEL_EBG15		},
+	{ "EBP15",		MODEL_EBP15		},
+	{ "BC105",		MODEL_BC105		},
+	{ "K3", 			MODEL_K3 			},
 	{ "XWR3100", 		MODEL_XWR3100 		},
 	{ "R7000P", 		MODEL_R7000P 		},
 	{ "EA6700", 		MODEL_EA6700 		},
 	{ "SBRAC1900P", 	MODEL_SBRAC1900P 	},
 	{ "F9K1118", 		MODEL_F9K1118 		},
 	{ "SBRAC3200P", 	MODEL_SBRAC3200P 	},
-	{ "R8500", 		MODEL_R8500 		},
+	{ "R8500", 			MODEL_R8500 		},
 	{ "R8000P", 		MODEL_R8000P 		},
-	{ "K3C", 		MODEL_K3C 		},
+	{ "K3C", 			MODEL_K3C 			},
 	{ "TY6201_RTK", 	MODEL_TY6201_RTK 	},
 	{ "TY6201_BCM", 	MODEL_TY6201_BCM 	},
 	{ "RAX120", 		MODEL_RAX120 		},
 	{ "DIR868L", 		MODEL_DIR868L 		},
 	{ "R6300V2", 		MODEL_R6300V2 		},
-	{ "RM-AC2100", 		MODEL_RMAC2100 		},
+	{ "RT-AC2100", 		MODEL_RTAC2100 		},
+	{ "RT-RM2100", 		MODEL_RTRM2100 		},
+	{ "RT-MIR3G", 		MODEL_RTMIR3G 		},
 	{ "RT-TX1801", 		MODEL_RTTX1801 		},
 	{ "RT-AX18T", 		MODEL_RTAX18T 		},
-	{ "RT-HAR", 		MODEL_RTHAR		},
-	{ "RT-GAX1800", 	MODEL_RTGAX1800		},
-	{ "RT-GAX1800B",        MODEL_RTGAX1800B        },
-	{ "RT-T6M",		MODEL_RTT6M		},
+	{ "RT-HAR", 		MODEL_RTHAR			},
 	{ "RT-CR660X", 		MODEL_RTCR660X 		},
-	{ "R6800", 		MODEL_R6800 		},
-	{ "RAX70", 		MODEL_RAX70 		},
-	{ "MS60", 		MODEL_MS60 		},
-	{ "MR60", 		MODEL_MR60 		},
+    { "RT-XG1", 		MODEL_RTXG1 		},
+	{ "R6800", 			MODEL_R6800 		},
+	{ "RAX70", 			MODEL_RAX70 		},
+	{ "MS60", 			MODEL_MS60 			},
+	{ "MR60", 			MODEL_MR60 			},
 	{ "PGB-M1", 		MODEL_PGBM1 		},
 	{ "JCG-Q10PRO", 	MODEL_JCGQ10PRO 	},
-	{ "RT-CMCCA9", 	    	MODEL_RTCMCCA9 	   	},
-	{ "RT-Q20", 	    	MODEL_RTQ20	    	},
+	{ "RT-CMCCA9", 	    MODEL_RTCMCCA9 	    },
+	{ "RT-Q20", 	    MODEL_RTQ20	    	},
 	{ "H3C-TX1801", 	MODEL_H3CTX1801 	},
 	{ "RM-AX6000", 		MODEL_RMAX6000 		},
 	{ "UNR030N", 		MODEL_UNR030N 		},
+	{ "XM-CR660X", 		MODEL_XMCR660X 		},
+	{ "JCG-Q20", 		MODEL_JCGQ20 		},
 	{ NULL, 0 },
 };
 
@@ -290,43 +302,51 @@ int get_switch(void)
 }
 
 static const struct model_s modelname_list[] = {
-	{ "K3", 	SWRT_MODEL_K3 },
+	{ "K3", 		SWRT_MODEL_K3 },
 	{ "XWR3100", 	SWRT_MODEL_XWR3100 },
 	{ "R7000P", 	SWRT_MODEL_R7000P },
 	{ "EA6700", 	SWRT_MODEL_EA6700 },
 	{ "SBRAC1900P", SWRT_MODEL_SBRAC1900P },
 	{ "F9K1118", 	SWRT_MODEL_F9K1118 },
 	{ "SBRAC3200P", SWRT_MODEL_SBRAC3200P },
-	{ "R8500", 	SWRT_MODEL_R8500 },
+	{ "R8500", 		SWRT_MODEL_R8500 },
 	{ "R8000P", 	SWRT_MODEL_R8000P },
-	{ "K3C", 	SWRT_MODEL_K3C },
+	{ "K3C", 		SWRT_MODEL_K3C },
 	{ "TY6201_RTK", SWRT_MODEL_TY6201_RTK },
 	{ "TY6201_BCM", SWRT_MODEL_TY6201_BCM },
 	{ "TY6202", 	SWRT_MODEL_TY6202 },
 	{ "RAX120", 	SWRT_MODEL_RAX120 },
 	{ "DIR868L", 	SWRT_MODEL_DIR868L },
 	{ "R6300V2", 	SWRT_MODEL_R6300V2 },
-	{ "MR60", 	SWRT_MODEL_MR60 },
-	{ "MS60", 	SWRT_MODEL_MS60 },
-	{ "RAX70", 	SWRT_MODEL_RAX70 },
-	{ "360V6", 	SWRT_MODEL_360V6 },
+	{ "MR60", 		SWRT_MODEL_MR60 },
+	{ "MS60", 		SWRT_MODEL_MS60 },
+	{ "RAX70", 		SWRT_MODEL_RAX70 },
+	{ "360V6", 		SWRT_MODEL_360V6 },
 	{ "GLAX1800", 	SWRT_MODEL_GLAX1800 },
-	{ "RMAC2100", 	SWRT_MODEL_RMAC2100 },
+	{ "RTAC2100", 	SWRT_MODEL_RTAC2100 },
+	{ "RTRM2100", 	SWRT_MODEL_RTRM2100 },
+	{ "RTMIR3G", 	SWRT_MODEL_RTMIR3G },
 	{ "RTTX1801", 	SWRT_MODEL_RTTX1801 },
 	{ "RTAX18T", 	SWRT_MODEL_RTAX18T },
-	{ "RTHAR", 	SWRT_MODEL_RTHAR },
-	{ "RTGAX1800", 	SWRT_MODEL_RTGAX1800 },
-	{ "RTGAX1800B",  SWRT_MODEL_RTGAX1800B },
-	{ "RTT6M", 	SWRT_MODEL_RTT6M },
+	{ "RTHAR", 		SWRT_MODEL_RTHAR},
 	{ "RTCR660X", 	SWRT_MODEL_RTCR660X },
-	{ "R6800", 	SWRT_MODEL_R6800 },
-	{ "PGBM1", 	SWRT_MODEL_PGBM1 },
+	{ "R6800", 		SWRT_MODEL_R6800 },
+	{ "PGBM1", 		SWRT_MODEL_PGBM1 },
 	{ "JCGQ10PRO", 	SWRT_MODEL_JCGQ10PRO },
 	{ "RTCMCCA9", 	SWRT_MODEL_RTCMCCA9 },
-	{ "RTQ20", 	SWRT_MODEL_RTQ20 },
+	{ "RTQ20", 		SWRT_MODEL_RTQ20 },
 	{ "H3CTX1801", 	SWRT_MODEL_H3CTX1801 },
 	{ "RM-AX6000", 	SWRT_MODEL_RMAX6000 },
 	{ "UNR030N", 	SWRT_MODEL_UNR030N },
+	{ "RAX200", 	SWRT_MODEL_RAX200 },
+	{ "TYAX5400", 	SWRT_MODEL_TYAX5400 },
+	{ "RGMA2820A", 	SWRT_MODEL_RGMA2820A },
+	{ "RGMA2820B", 	SWRT_MODEL_RGMA2820B },
+	{ "JDCAX1800", 	SWRT_MODEL_JDCAX1800 },
+	{ "RGMA3062", 	SWRT_MODEL_RGMA3062 },
+	{ "TY6201PRO", 	SWRT_MODEL_TY6201PRO },
+	{ "XMCR660X", 	SWRT_MODEL_XMCR660X },
+	{ "JCGQ20", 	SWRT_MODEL_JCGQ20 },
 	{ NULL, 0 },
 };
 
@@ -383,6 +403,7 @@ int is_shared_modelid(int model, char *build_name)
 		if(!strcmp(build_name, "GT-AC2900"))
 			return model + CFID_BASE_2 + 2 + 30;
 		break;
+/*
         case MODEL_RTAX58U:
 		if(!strcmp(build_name, "RT-AX58U"))
 			return model + CFID_BASE_2 + 1 + 30*2;
@@ -399,6 +420,7 @@ int is_shared_modelid(int model, char *build_name)
 		if(!strcmp(build_name, "GS-AX5400"))
 			return model + CFID_BASE_2 + 7 + 30*2;
 		break;
+*/
         case MODEL_RTAX55:
 		if(!strcmp(build_name, "RT-AX55"))
 			return model + CFID_BASE_2 + 1 + 30*3;
@@ -428,18 +450,26 @@ int get_cf_id(int model, char *name) {
 
 	snprintf(tmp, sizeof(tmp), "CF_%s", asus_models_str[model] + strlen("MODEL_"));
 
-	// some models use same modelid
+	// some models use same modelid, specify them in cfid table (comfw.h)
 	if(model == MODEL_RTAX58U) {
 #ifdef RTAX82_XD6
 		return CF_RTAX82_XD6;
+#elif defined(RTAX82U)
+		return CF_RTAX82U;
 #elif defined(TUFAX3000)
 		return CF_TUFAX3000;
+#elif defined(TUFAX5400)
+		return CF_TUFAX5400;
+#elif defined(GSAX3000)
+		return CF_GSAX3000;
+#elif defined(GSAX5400)
+		return CF_GSAX5400;
 #else
 		return CF_RTAX58U;
 #endif
 	}
 
-	for(i = 0; i < MAX_FTYPE; ++i) {
+	for(i = 0; i < MAX_FTYPE; ++i) {	// for those independent modelid and defined in cfid table
 		if((strncmp(tmp, comfw_modid_s[i], strlen(tmp)) == 0) && (strlen(tmp)==strlen(comfw_modid_s[i])))
 			return i;
 	}
@@ -479,4 +509,3 @@ char *get_cf_name(int cfid) {
 */
 
 #endif
-

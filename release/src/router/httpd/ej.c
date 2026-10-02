@@ -105,7 +105,7 @@ struct REPLACE_PRODUCTID_S replace_productid_t[] =
 	{"RT-AX54HP", "机型设置错误", "global"},
 #elif defined(RTCONFIG_BOARD_360_T6GS)
         {"RT-AX53U", "360路由T6GS", "CN"},
-        {"RT-AX53U", "360T6GS",", "global"},
+        {"RT-AX53U", "360T6GS", "global"},
 #else
 	{"RT-AX53U", "RT-AX53U", "CN"},
 	{"RT-AX53U", "RT-AX53U", "global"},

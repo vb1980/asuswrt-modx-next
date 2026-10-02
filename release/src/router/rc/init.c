@@ -4433,11 +4433,11 @@ int init_nvram(void)
 		nvram_set_int("btn_wps_gpio_1", 4|GPIO_ACTIVE_LOW);
 		nvram_set_int("led_pwr_gpio", 7|GPIO_ACTIVE_LOW);
 		nvram_set_int("led_wan_gpio", 8|GPIO_ACTIVE_LOW);
-#if defined(RTCONFIG_BOARD_360_T6GS)
-                nvram_set_int("btn_rst_gpio", 7);
-                nvram_set_int("btn_wps_gpio", 6);
-                nvram_set_int("led_pwr_gpio", 13|GPIO_ACTIVE_LOW);
-                nvram_set_int("led_lan_gpio", 10|GPIO_ACTIVE_LOW);
+#elif defined(RTCONFIG_BOARD_360_T6GS)
+		nvram_set_int("btn_rst_gpio", 7);
+		nvram_set_int("btn_wps_gpio", 6);
+		nvram_set_int("led_pwr_gpio", 13|GPIO_ACTIVE_LOW);
+		nvram_set_int("led_lan_gpio", 10|GPIO_ACTIVE_LOW);
 		nvram_set_int("led_wan_gpio", 15|GPIO_ACTIVE_LOW);
 #elif defined(RTCONFIG_BOARD_R3G)
 		nvram_set_int("btn_rst_gpio", 18|GPIO_ACTIVE_LOW);
@@ -5426,7 +5426,7 @@ int init_nvram(void)
                 nvram_set_int("btn_rst_gpio",  7|GPIO_ACTIVE_LOW);
                 nvram_set_int("btn_wps_gpio",  6|GPIO_ACTIVE_LOW);
                 nvram_set_int("led_pwr_gpio",  13|GPIO_ACTIVE_LOW);
-		nvram_set_int("led_lan_gpio",  15|GPIO_ACTIVE_LOW);
+                nvram_set_int("led_lan_gpio",  15|GPIO_ACTIVE_LOW);
                 nvram_set_int("led_wan_gpio", 10|GPIO_ACTIVE_LOW);
 
                 nvram_set("ehci_ports", "");

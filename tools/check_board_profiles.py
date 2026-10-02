@@ -48,7 +48,7 @@ def main():
     switch = switch[switch.index("\n{"):]
     switch = switch[:switch.index("\n#if defined(RTCONFIG_SWRT_I2CLED)")]
     lan_count = {"R3G": 2, "HIWIFI4": 3, "E8820S": 4, "A040WQ": 4, "MSG1500": 4, "R6800": 4, "R3P": 3,
-            "RM2100": 3, "SIM-AX18T": 4, "360-T6GS": 3}
+            "RM2100": 3, "SIM-AX18T": 4, "360-T6GS": 4}
     features = None
     image_names = set()
     with tempfile.TemporaryDirectory(prefix="board-profiles-") as temp:

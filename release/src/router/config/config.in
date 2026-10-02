@@ -855,6 +855,9 @@ config RTCONFIG_BOARD_RM2100
 config RTCONFIG_BOARD_SIM_AX18T
 	bool "SIM-AX18T"
 
+config RTCONFIG_BOARD_360_T6GS
+        bool "360-T6GS"
+
 endchoice
 
 config RTCONFIG_RALINK_MT7622

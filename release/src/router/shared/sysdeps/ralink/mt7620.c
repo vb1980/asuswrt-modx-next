@@ -204,6 +204,18 @@ enum {
 	P7_PORT=7,
 };
 #define MT7621_GSW
+#elif defined(RTCONFIG_BOARD_360_T6GS)
+enum {
+        WAN_PORT=3,
+        LAN1_PORT=2,
+        LAN2_PORT=1,
+        LAN3_PORT=0,
+        LAN4_PORT=4, /* unused */
+        P5_PORT=5,
+        CPU_PORT=6,
+        P7_PORT=7,
+};
+#define MT7621_GSW
 #elif defined(RTCONFIG_BOARD_E8820S)
 enum {
 	WAN_PORT=4,
@@ -2529,7 +2541,7 @@ void ATE_mt7621_esw_port_status(void)
 		(pS.link[WAN_PORT] == 1) ? (pS.speed[WAN_PORT] == 2) ? 'G' : 'M': 'X',
 		(pS.link[LAN1_PORT] == 1) ? (pS.speed[LAN1_PORT] == 2) ? 'G' : 'M': 'X',
 		(pS.link[LAN2_PORT] == 1) ? (pS.speed[LAN2_PORT] == 2) ? 'G' : 'M': 'X');
-#elif (defined(RTAX53U) && !defined(RTCONFIG_BOARD_A040WQ) && !defined(RTCONFIG_BOARD_MSG1500) && !defined(RTCONFIG_BOARD_R6800) && !defined(RTCONFIG_BOARD_SIM_AX18T) && !defined(RTCONFIG_BOARD_E8820S)) || defined(RTCONFIG_3LANPORT_DEVICE)
+#elif (defined(RTAX53U) && !defined(RTCONFIG_BOARD_A040WQ) && !defined(RTCONFIG_BOARD_MSG1500) && !defined(RTCONFIG_BOARD_R6800) && !defined(RTCONFIG_BOARD_SIM_AX18T) && !defined(RTCONFIG_BOARD_E8820S) && !defined(RTCONFIG_BOARD_360_T6GS)) || defined(RTCONFIG_3LANPORT_DEVICE)
 	snprintf(buf, sizeof(buf), "W0=%C;L1=%C;L2=%C;L3=%C;",
 		(pS.link[ WAN_PORT] == 1) ? (pS.speed[ WAN_PORT] == 2) ? 'G' : 'M': 'X',
 		(pS.link[LAN1_PORT] == 1) ? (pS.speed[LAN1_PORT] == 2) ? 'G' : 'M': 'X',

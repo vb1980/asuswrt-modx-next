@@ -298,6 +298,8 @@ void swrt_init_pre()
 		nvram_set("modelname", "RTQ20");
 #elif defined(H3CTX1801)
 		nvram_set("modelname", "H3CTX1801");
+#elif defined(RTT6GS)
+                nvram_set("modelname", "RTT6GS");
 #elif defined(TUFAC1750)
 		nvram_set("modelname", "TUFAC1750");
 #elif defined(RTAC95U)

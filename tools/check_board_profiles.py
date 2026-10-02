@@ -19,6 +19,7 @@ PROFILES = {
     "R3P": ("mt7615", "MT7615E", "MT7615E", "usbX1", "4", "4"),
     "RM2100": ("mt7603_mt7615", "MT7603E", "MT7615E", None, "2", "4"),
     "SIM-AX18T": ("mt7915", "MT7915", "NONE", None, "2", "2"),
+    "360-T6GS": ("mt7915", "MT7915", "NONE", None, "2", "2")
 }
 
 
@@ -47,7 +48,7 @@ def main():
     switch = switch[switch.index("\n{"):]
     switch = switch[:switch.index("\n#if defined(RTCONFIG_SWRT_I2CLED)")]
     lan_count = {"R3G": 2, "HIWIFI4": 3, "E8820S": 4, "A040WQ": 4, "MSG1500": 4, "R6800": 4, "R3P": 3,
-                 "RM2100": 3, "SIM-AX18T": 4}
+            "RM2100": 3, "SIM-AX18T": 4, "360-T6GS": 3}
     features = None
     image_names = set()
     with tempfile.TemporaryDirectory(prefix="board-profiles-") as temp:
@@ -76,8 +77,8 @@ def main():
             if second != "NONE":
                 assert "CONFIG_RT_SECOND_IF_RF_OFFSET=0x8000" in kernel, board
             assert ("CONFIG_MT76X2_AP=m" in kernel) == (second == "MT7612E"), board
-            assert ("CONFIG_DBDC_MODE=y" in kernel) == (board in {"A040WQ", "MSG1500", "SIM-AX18T"}), board
-            assert ("CONFIG_MULTI_PROFILE_SUPPORT=y" in kernel) == (board in {"A040WQ", "MSG1500", "SIM-AX18T"}), board
+            assert ("CONFIG_DBDC_MODE=y" in kernel) == (board in {"A040WQ", "MSG1500", "SIM-AX18T", "360-T6GS"}), board
+            assert ("CONFIG_MULTI_PROFILE_SUPPORT=y" in kernel) == (board in {"A040WQ", "MSG1500", "SIM-AX18T", "360-T6GS"}), board
             assert options["RALINK_DBDC_MODE"] == ("y" if board in {"A040WQ", "MSG1500"} else "n"), board
             assert options.get("SWRT_I2CLED", "n") == ("y" if board == "R6800" else "n"), board
             assert options.get("I2C_CHARDEV") == ("y" if board == "R6800" else None), board
@@ -140,7 +141,7 @@ def main():
                 assert "INDEX0_profile_path=/etc/Wireless/RT2860/RT2860.dat;/etc/Wireless/iNIC/iNIC_ap.dat" in profile
                 assert "INDEX0_main_ifname=ra0;rai0" in profile
                 assert "INDEX0_apcli_ifname=apcli;apclii" in profile
-            if board == "SIM-AX18T":
+            if board in {"SIM-AX18T", "360-T6GS"}:
                 assert "INDEX0_main_ifname=ra0;rai0" in profile
                 assert "INDEX0_apcli_ifname=apcli;apclii" in profile
                 assert "/ra_SKU/SingleSKU_mt7615e-sku.dat" in profile

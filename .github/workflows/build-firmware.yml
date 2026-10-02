@@ -21,6 +21,7 @@ on:
           - R3P
           - RM2100
           - SIM-AX18T
+          - 360-T6GS
           - ALL
 
 permissions:
@@ -38,7 +39,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        board: ${{ fromJSON((inputs.board == '' || inputs.board == 'ALL') && '["R3G","HIWIFI4","E8820S","A040WQ","MSG1500","R6800","R3P","RM2100","SIM-AX18T"]' || format('["{0}"]', inputs.board)) }}
+        board: ${{ fromJSON((inputs.board == '' || inputs.board == 'ALL') && '["R3G","HIWIFI4","E8820S","A040WQ","MSG1500","R6800","R3P","RM2100","SIM-AX18T","360-T6GS"]' || format('["{0}"]', inputs.board)) }}
     env:
       SELECTED_BOARD: ${{ matrix.board }}
       BUILD_ROOT: /build

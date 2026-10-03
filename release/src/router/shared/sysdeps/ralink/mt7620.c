@@ -240,7 +240,7 @@ enum {
 	P7_PORT=7,
 };
 #define MT7621_GSW
-#elif defined(JCGQ10PRO) || defined(JCGQ20) || defined(RTCMCCA9) || defined(RTQ20) || defined(RTXG1)
+#elif defined(RTCMCCA9) || defined(RTQ20) || defined(RTXG1)
 enum {
 	WAN_PORT=0,
 	LAN1_PORT=1,
@@ -252,7 +252,7 @@ enum {
 	P7_PORT=7,
 };
 #define MT7621_GSW
-#elif defined(H3CTX1801) || defined(XMCR660X)|| defined(RTTX1801) || defined(RTAX18T) || defined(RTHAR) || defined(RTCR660X)
+#elif defined(RTTX1801) || defined(RTAX18T) || defined(RTHAR) || defined(RTCR660X)
 enum {
 	WAN_PORT=4,
 	LAN1_PORT=3,

@@ -4556,7 +4556,7 @@ struct nvram_tuple router_defaults[] = {
 	{ "tyax5400key", "", CKN_STR64, CKN_TYPE_DEFAULT, CKN_ACC_LEVEL_DEFAULT, CKN_ENC_DEFAULT, 0 },
 #elif defined(RGMA2820A) || defined(RGMA2820B)
 	{ "rgkey", "", CKN_STR64, CKN_TYPE_DEFAULT, CKN_ACC_LEVEL_DEFAULT, CKN_ENC_DEFAULT, 0 },
-#elif defined(RAC2V1S) || defined(RGMA3062) || defined(TY6201PRO) || defined(H3CTX1801)
+#elif defined(RAC2V1S) || defined(RGMA3062) || defined(TY6201PRO)
 	{ "swrtkey", "", CKN_STR64, CKN_TYPE_DEFAULT, CKN_ACC_LEVEL_DEFAULT, CKN_ENC_DEFAULT, 0 },
 #endif
 

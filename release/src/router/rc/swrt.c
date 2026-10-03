@@ -177,18 +177,10 @@ void swrt_init_pre()
 		nvram_set("modelname", "R6800");
 #elif defined(PGBM1)
 		nvram_set("modelname", "PGBM1");
-#elif defined(JCGQ10PRO)
-		nvram_set("modelname", "JCGQ10PRO");
-#elif defined(H3CTX1801)
-		nvram_set("modelname", "H3CTX1801");
-#elif defined(XMCR660X)
-		nvram_set("modelname", "XMCR660X");
 #elif defined(TY6201PRO)
 		nvram_set("modelname", "TY6201PRO");
 #elif defined(RGMA3062)
 		nvram_set("modelname", "RGMA3062");
-#elif defined(JCGQ20)
-		nvram_set("modelname", "JCGQ20");
 //asus
 #elif defined(RTAC68U)
 		nvram_set("modelname", "RTAC68U");
@@ -290,14 +282,10 @@ void swrt_init_pre()
 		nvram_set("modelname", "R6800");
 #elif defined(PGBM1)
 		nvram_set("modelname", "PGBM1");
-#elif defined(JCGQ10PRO)
-		nvram_set("modelname", "JCGQ10PRO");
 #elif defined(RTCMCCA9)
 		nvram_set("modelname", "RTCMCCA9");
 #elif defined(RTQ20)
 		nvram_set("modelname", "RTQ20");
-#elif defined(H3CTX1801)
-		nvram_set("modelname", "H3CTX1801");
 #elif defined(RTT6GS)
                 nvram_set("modelname", "RTT6GS");
 #elif defined(TUFAC1750)

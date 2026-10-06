@@ -46,6 +46,9 @@ config RTCONFIG_BOARD_KOMI_A8
 	bool "RTCONFIG_BOARD_KOMI_A8"
 	default n
 
+config RTCONFIG_BOARD_360_T6GS
+        bool "RTCONFIG_BOARD_360_T6GS"
+        default n
 
 config RTCONFIG_FW_JUMP
 	bool "build the jumped firmware"

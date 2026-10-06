@@ -53,7 +53,7 @@ static const struct led_btn_table_s {
 	int *p_val;
 } led_btn_table[] = {
 	/* button */
-	#if defined(RTCONFIG_BOARD_C_LIFE_XG1) || defined(RTCONFIG_BOARD_H3C_TX180X) || defined(RTCONFIG_BOARD_JCG_Q20) || defined(RTCONFIG_BOARD_CMCC_A9) || defined(RTCONFIG_BOARD_CMCC_A9_2) || defined(RTCONFIG_BOARD_CR660X) || defined(RTCONFIG_BOARD_XY_C3N) || defined(RTCONFIG_BOARD_SIM_AX18) || defined(RTCONFIG_BOARD_RX6000) || defined(RTCONFIG_BOARD_G_AX1800) || defined(RTCONFIG_BOARD_KOMI_A8)
+	#if defined(RTCONFIG_BOARD_C_LIFE_XG1) || defined(RTCONFIG_BOARD_H3C_TX180X) || defined(RTCONFIG_BOARD_JCG_Q20) || defined(RTCONFIG_BOARD_CMCC_A9) || defined(RTCONFIG_BOARD_CMCC_A9_2) || defined(RTCONFIG_BOARD_CR660X) || defined(RTCONFIG_BOARD_XY_C3N) || defined(RTCONFIG_BOARD_SIM_AX18) || defined(RTCONFIG_BOARD_RX6000) || defined(RTCONFIG_BOARD_G_AX1800) || defined(RTCONFIG_BOARD_KOMI_A8) || defined(RTCONFIG_BOARD_360_T6GS)
 	{ "btn_rst_gpio_1",	&btn_gpio_table[BTN_RESET] },
 	{ "btn_wps_gpio_1",	&btn_gpio_table[BTN_WPS] },
 #else
@@ -359,7 +359,7 @@ int extract_gpio_pin(const char *gpio)
 int init_gpio(void)
 {
 	char *btn_list[] = {
-#if defined(RTCONFIG_BOARD_C_LIFE_XG1) || defined(RTCONFIG_BOARD_H3C_TX180X) || defined(RTCONFIG_BOARD_JCG_Q20) || defined(RTCONFIG_BOARD_CMCC_A9) || defined(RTCONFIG_BOARD_CMCC_A9_2) || defined(RTCONFIG_BOARD_CR660X) || defined(RTCONFIG_BOARD_XY_C3N) || defined(RTCONFIG_BOARD_SIM_AX18) || defined(RTCONFIG_BOARD_RX6000) || defined(RTCONFIG_BOARD_G_AX1800) || defined(RTCONFIG_BOARD_KOMI_A8)
+#if defined(RTCONFIG_BOARD_C_LIFE_XG1) || defined(RTCONFIG_BOARD_H3C_TX180X) || defined(RTCONFIG_BOARD_JCG_Q20) || defined(RTCONFIG_BOARD_CMCC_A9) || defined(RTCONFIG_BOARD_CMCC_A9_2) || defined(RTCONFIG_BOARD_CR660X) || defined(RTCONFIG_BOARD_XY_C3N) || defined(RTCONFIG_BOARD_SIM_AX18) || defined(RTCONFIG_BOARD_RX6000) || defined(RTCONFIG_BOARD_G_AX1800) || defined(RTCONFIG_BOARD_KOMI_A8) || defined(RTCONFIG_BOARD_360_T6GS)
 		"btn_rst_gpio_1", "btn_wps_gpio_1",
 #else
 		"btn_rst_gpio", "btn_wps_gpio",

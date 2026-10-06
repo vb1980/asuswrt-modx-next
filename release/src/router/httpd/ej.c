@@ -112,6 +112,11 @@ struct REPLACE_PRODUCTID_S replace_productid_t[] =
 	{"RT-AX53U", "机型设置错误", "global"},
 	{"RT-AX54HP", "KOMI-A8", "CN"},
 	{"RT-AX54HP", "KOMI-A8", "global"},
+#elif defined(RTCONFIG_BOARD_360_T6GS)
+        {"RT-AX53U", "机型设置错误", "CN"},
+        {"RT-AX53U", "机型设置错误", "global"},
+        {"RT-AX54HP", "360-T6GS", "CN"},
+        {"RT-AX54HP", "360-T6GS", "global"},
 #endif
 	{NULL, NULL, NULL}
 };
